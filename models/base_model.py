@@ -13,10 +13,10 @@ class BaseModel:
             for k, v in kwargs.items():
                 if k != '__class__':
                     setattr(self, k, v)
-                if hasattr(self, 'created_at') and type(self.created_at) is str:
-                    self.created_at = datetime.fromisoformat(v)
-                if hasattr(self, 'updated_at') and type(self.updated_at) is str:
-                    self.updated_at = datetime.fromisoformat(v)
+            if hasattr(self, 'created_at') and type(self.created_at) is str:
+                self.created_at = datetime.fromisoformat(v)
+            if hasattr(self, 'updated_at') and type(self.updated_at) is str:
+                self.updated_at = datetime.fromisoformat(v)
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
@@ -24,17 +24,15 @@ class BaseModel:
             models.storage.new(self)
             models.storage.save()
 
-
     def __str__(self):
         """ create a string that prints class name, id, dict """
         return "[{}] ({}) {}".format(self.__class__.__name__, self.id,
-		                                           self.__dict__)
+                                     self.__dict__)
 
     def save(self):
         """ Updates the updated_at variable with the current time """
         self.updated_at = datetime.now()
         models.storage.save()
-
 
     def to_dict(self):
         """returns a dictionary of the instance attributes"""

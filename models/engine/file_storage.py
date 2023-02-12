@@ -1,11 +1,12 @@
 #!/usr/bin/python3
-""" Class Filestorage"""
+""" Class: FileStorage """
 import json
 
 
-class FileStorage:
-    """Representing a class Filestorage"""
-    __file_path = 'file.json'
+class FileStorage():
+    """class that serializes instances to a JSON file and deserializes JSON
+    file to instances"""
+    __file_path = "file.json"
     __objects = {}
 
     def all(self):
@@ -13,25 +14,27 @@ class FileStorage:
         return self.__objects
 
     def new(self, obj):
-        """sets in __objects the obj with key <obj class name>.id"""
-        string = '{}.{}'.format(obj.__class__.__name__, obj.id)
-        self.__objects[string] = obj
+        """set __objects the obj with key <obj class name>.id
+        & adds the new dictionary to __objects"""
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        self.__objects[key] = obj
 
     def save(self):
-        """serializes __objects to the JSON file"""
+        """serializes __objects to the JSON file (__file_path)"""
         obj_dict = {}
-        for k, v in self.__objects.items():
-            obj_dict[k] = v.to_dict()
+        for key, value in self.__objects.items():
+            obj_dict[key] = value.to_dict()
         with open(self.__file_path, 'w', encoding="utf-8") as f:
             json.dump(obj_dict, f)
 
     def reload(self):
-        """deserializes the JSON file to __objects"""
+        """if file exists, public instance method deserializes the JSON file
+        to __objects"""
         try:
-            with open(self.__file_path, 'r', encoding="utf-8") as f:
-                json_dict = json.load(f)
-            for k, v in json_dict.items():
-                class_name = k.split('.')
-                self.__objects[k] = eval('{} (**{})'.format(class_name[0], v))
-        except Exception:
+            with open(self.__file_path, "r", encoding="utf-8") as f:
+                for o in json.load(f).values():
+                    name = o["__class__"]
+                    del o["__class__"]
+                    self.new(eval(name)(**o))
+        except FileNotFoundError:
             pass
