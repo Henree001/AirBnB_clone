@@ -37,5 +37,5 @@ class FileStorage():
             for k, v in objects.items():
                 classname = k.split('.')
                 self.__objects[k] = eval('{}(**{})'.format(classname[0], v))
-        except FileNotFoundError:
+        except:
             pass
