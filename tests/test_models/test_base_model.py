@@ -232,6 +232,17 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(base_dict['created_at'], str)
         self.assertIsInstance(base_dict['updated_at'], str)
 
+    def test_save(self):
+        """Test save, if date is datetime object"""
+        self.save_test = BaseModel()
+        before = self.save_test.updated_at
+        self.save_test.save()
+        after = self.save_test.updated_at
+        self.assertTrue(type(after) is datetime)
+        """Test save if strings are the same"""
+        before = str(before)
+        after = str(after)
+        self.assertFalse(after == before)
 
 if __name__ == "__main__":
     unittest.main()

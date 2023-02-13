@@ -138,7 +138,7 @@ class HBNBCommand(cmd.Cmd):
             obj = all_obj[linesplit[0]]
             setattr(obj, linesplit[1], linesplit[2])
             storage.save
-        except FileNotFoundError:
+        except Exception:
             print('** no instance found **')
 
 
