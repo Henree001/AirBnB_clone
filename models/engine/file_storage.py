@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Class: FileStorage """
 import json
+from models.base_model import BaseModel
 
 
 class FileStorage():
@@ -31,10 +32,10 @@ class FileStorage():
         """if file exists, public instance method deserializes the JSON file
         to __objects"""
         try:
-            with open(self.__file_path, "r", encoding="utf-8") as f:
-                for o in json.load(f).values():
-                    name = o["__class__"]
-                    del o["__class__"]
-                    self.new(eval(name)(**o))
+            with open(self.__file_path, 'r') as f:
+                objects = json.load(f)
+            for k, v in objects.items():
+                classname = k.split('.')
+                self.__objects[k] = eval('{}(**{})'.format(classname[0], v))
         except FileNotFoundError:
             pass
