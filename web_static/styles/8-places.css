@@ -1,6 +1,10 @@
-.places h1{
+.place{
     font-size: 30px;
     margin-bottom: 0;
+}
+.places{
+    display: flex;
+    flex-wrap: wrap;
 }
 article{
     width: 390px;
@@ -8,7 +12,7 @@ article{
     padding: 20px;
     border:1px solid #FF5A5F;
     border-radius: 4px;
-    display: inline-block;
+    
 }
 .places h2{
     font-size: 30px;
